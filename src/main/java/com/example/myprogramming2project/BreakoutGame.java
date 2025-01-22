@@ -10,12 +10,18 @@ import javafx.stage.Stage;
 
 public class BreakoutGame extends Application {
 
+    static Ball ball;
+    static Scene scene;
+    static Group root;
+    static Group gameOverLabelGr;
+    static GameOverLabel gameOverLabel;
+
     @Override
     public void start(Stage stage){
 
         // Root node and scene
-        Group root = new Group();
-        Scene scene = new Scene(root, 800, 600, Color.BLACK);
+        root = new Group();
+        scene = new Scene(root, 800, 600, Color.BLACK);
         stage.setScene(scene);
 
 
@@ -35,12 +41,13 @@ public class BreakoutGame extends Application {
         root.getChildren().add(paddle);
 
         // GameOverLabel
-        Group gameOverLabelGr = new Group();
-        GameOverLabel gameOverLabel = new GameOverLabel();
+        GameOverLabel gameoverLabel = new GameOverLabel();
+        root.getChildren().add(gameoverLabel);
+        gameoverLabel.setVisible(false);
 
 
         // Ball
-        Ball ball = new Ball((int)paddle.getX()+(int)paddle.getWidth()/2, (int)paddle.getY(), scene);
+        ball = new Ball((int)paddle.getX()+(int)paddle.getWidth()/2, (int)paddle.getY(), scene);
         root.getChildren().add(ball);
 
         Group bricks = new Group();
@@ -90,7 +97,7 @@ public class BreakoutGame extends Application {
 
 
 
-                checkGameOver(ball, scene, bricks, root, gameOverLabelGr, gameOverLabel);
+                checkGameOver(bricks);
                 ball.checkBounds(scene);
                 ball.checkPaddle(paddle, scene);
                 ball.move(paddle);
@@ -115,27 +122,35 @@ public class BreakoutGame extends Application {
         }
     }
 
-    private static void checkGameOver(Ball ball, Scene scene, Group bricks, Group root, Group gameOverLabelGr, GameOverLabel gameOverLabel){
+    private static void checkGameOver(Group bricks){
 
 
         if (ball.getCenterY()+ball.getRadius() >= scene.getHeight()){
 
             if (ball.isGameStarted()) {
-                bricks.getChildren().clear();
+                //gameOverLabel.setVisible(true);
+                //bricks.getChildren().clear();
+                /*
                 if (gameOverLabelGr.getChildren().isEmpty()) {
                     gameOverLabelGr.getChildren().add(gameOverLabel);
                     root.getChildren().add(gameOverLabelGr);
 
+
+
                 }
+
+                 */
                 scene.setOnMouseClicked(e -> {
                     ball.resetBall();
+
                     newGame(bricks);
-                    gameOverLabelGr.getChildren().removeFirst();
+                    //gameOverLabelGr.getChildren().removeFirst();
                     scene.setOnMouseClicked(null);
 
                 });
             }
         if (!ball.isGameStarted())
+            gameOverLabel.setVisible(true);
             scene.setOnMouseClicked(e -> {
                 ball.getBallMoving();
                 scene.setOnMouseClicked(null);
