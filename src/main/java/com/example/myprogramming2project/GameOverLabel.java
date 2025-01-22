@@ -1,10 +1,13 @@
 package com.example.myprogramming2project;
 
 
+import javafx.animation.ScaleTransition;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.util.Duration;
+
 import java.awt.*;
 
 public class GameOverLabel extends Label {
@@ -28,6 +31,4 @@ public class GameOverLabel extends Label {
     public Label getStartLabel() {
         return startLabel;
     }
-
-
 }
