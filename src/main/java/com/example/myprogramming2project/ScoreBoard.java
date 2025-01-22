@@ -11,7 +11,7 @@ public class ScoreBoard extends Label {
 
     public ScoreBoard(){
         super("Score: 0");
-        setTextFill(Color.WHITE);
+        setTextFill(Color.YELLOW);
         setFont(Font.font("Impact", 20));
         setLayoutX(5);
     }
