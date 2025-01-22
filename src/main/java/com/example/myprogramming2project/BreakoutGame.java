@@ -41,9 +41,9 @@ public class BreakoutGame extends Application {
         root.getChildren().add(paddle);
 
         // GameOverLabel
-        GameOverLabel gameoverLabel = new GameOverLabel();
-        root.getChildren().add(gameoverLabel);
-        gameoverLabel.setVisible(false);
+        gameOverLabel = new GameOverLabel();
+        root.getChildren().add(gameOverLabel);
+        gameOverLabel.setVisible(false);
 
 
         // Ball
@@ -137,20 +137,25 @@ public class BreakoutGame extends Application {
 
 
 
-                }
-
                  */
+                gameOverLabel.setVisible(true);
+                System.out.println("Game over hello");
+            }
+
+
                 scene.setOnMouseClicked(e -> {
                     ball.resetBall();
-
+                    gameOverLabel.setVisible(false);
                     newGame(bricks);
                     //gameOverLabelGr.getChildren().removeFirst();
                     scene.setOnMouseClicked(null);
 
                 });
             }
-        if (!ball.isGameStarted())
-            gameOverLabel.setVisible(true);
+
+
+        if (!ball.isGameStarted()) {
+            //gameOverLabel.setVisible(true);
             scene.setOnMouseClicked(e -> {
                 ball.getBallMoving();
                 scene.setOnMouseClicked(null);
