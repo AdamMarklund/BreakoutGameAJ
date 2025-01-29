@@ -52,6 +52,8 @@ public class BreakoutGame extends Application {
         root.getChildren().add(gameOverLabel.getStartLabel());
         gameOverLabel.setVisible(false);
         gameOverLabel.getStartLabel().setVisible(false);
+        gameOverLabel.animateStartLabel();
+
 
         // Ball
         ball = new Ball((int)paddle.getX()+(int)paddle.getWidth()/2, (int)paddle.getY(), scene);
@@ -62,6 +64,7 @@ public class BreakoutGame extends Application {
 
         scoreLabel = new ScoreBoard();
         root.getChildren().add(scoreLabel);
+
 
         /*
         Image image = new Image("file:src/Gold.png");
