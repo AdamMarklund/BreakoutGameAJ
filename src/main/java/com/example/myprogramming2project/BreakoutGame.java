@@ -15,6 +15,12 @@ public class BreakoutGame extends Application {
     static Group root;
     static Group gameOverLabelGr;
     static GameOverLabel gameOverLabel;
+    static ScoreBoard scoreLabel;
+
+    static SoftBrickFactory softBrickFactory;
+    static MediumBrickFactory mediumBrickFactory;
+    static HardBrickFactory hardBrickFactory;
+    static SuperHardBrickFactory superHardBrickFactory;
 
     @Override
     public void start(Stage stage){
@@ -54,7 +60,7 @@ public class BreakoutGame extends Application {
         Group bricks = new Group();
 
 
-        ScoreBoard scoreLabel = new ScoreBoard();
+        scoreLabel = new ScoreBoard();
         root.getChildren().add(scoreLabel);
 
         /*
@@ -67,7 +73,10 @@ public class BreakoutGame extends Application {
 
          */
 
-
+        softBrickFactory = new SoftBrickFactory();
+        mediumBrickFactory = new MediumBrickFactory();
+        hardBrickFactory = new HardBrickFactory();
+        superHardBrickFactory = new SuperHardBrickFactory();
 
 
         // Image image = new Image();
@@ -115,11 +124,19 @@ public class BreakoutGame extends Application {
     }
 
     private static void newGame(Group bricks){
+        bricks.getChildren().clear();
+
         for (int i=0; i<11; i++) {
-            bricks.getChildren().add(new SoftBrick(i * 70, 200));
-            bricks.getChildren().add(new MediumBrick(i * 70, 150));
-            bricks.getChildren().add(new HardBrick(i * 70, 100));
-            bricks.getChildren().add(new SuperHardBrick(i * 70, 50));
+
+            //bricks.getChildren().add(new SoftBrick(i * 70, 200));
+            //bricks.getChildren().add(new MediumBrick(i * 70, 150));
+            //bricks.getChildren().add(new HardBrick(i * 70, 100));
+            //bricks.getChildren().add(new SuperHardBrick(i * 70, 50));
+
+            bricks.getChildren().add(softBrickFactory.createBrick(i*70, 200));
+            bricks.getChildren().add(mediumBrickFactory.createBrick(i*70, 150));
+            bricks.getChildren().add(hardBrickFactory.createBrick(i*70, 100));
+            bricks.getChildren().add(superHardBrickFactory.createBrick(i*70, 50));
         }
     }
 
@@ -142,7 +159,7 @@ public class BreakoutGame extends Application {
                 gameOverLabel.setVisible(true);
                 gameOverLabel.getStartLabel().setVisible(true);
 
-                System.out.println("Game over hello");
+
             }
 
 
@@ -162,6 +179,7 @@ public class BreakoutGame extends Application {
         if (!ball.isGameStarted()) {
             //gameOverLabel.setVisible(true);
             scene.setOnMouseClicked(e -> {
+                scoreLabel.resetScore();
                 ball.getBallMoving();
                 gameOverLabel.getStartLabel().setVisible(false);
                 scene.setOnMouseClicked(null);

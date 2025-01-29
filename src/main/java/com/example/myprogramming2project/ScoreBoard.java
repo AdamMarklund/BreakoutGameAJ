@@ -29,6 +29,13 @@ public class ScoreBoard extends Label {
         setText("Score: " + Integer.toString(score));
     }
 
+    public void resetScore(){
+        score = 0;
+        setText("Score: " + Integer.toString(score));
+
+    }
+
+
     public int getScore() {
         return score;
     }
