@@ -103,5 +103,7 @@ public class Ball extends Circle {
         velocityY = -10;
         gameStarted = true;
     }
+
+
 }
 
