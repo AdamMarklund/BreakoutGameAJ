@@ -22,7 +22,7 @@ public class ScoreBoard extends Label {
         super("Score: 0");
         setTextFill(Color.YELLOW);
         setFont(Font.font("Impact", 30));
-        setLayoutX(10);
+        setLayoutX(Globals.getOffsetX() + 10);
         setLayoutY(10);
     }
 
@@ -45,12 +45,25 @@ public class ScoreBoard extends Label {
 
 
     public void animateScoreLabel() {
-        ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(200),this);
-        scaleTransition.setByX(0.25f);
-        scaleTransition.setByY(0.25f);
-        scaleTransition.setCycleCount(1);
-        scaleTransition.setAutoReverse(true);
-        scaleTransition.play();
+        ScaleTransition scaleTransitionUp = new ScaleTransition(Duration.millis(200),this);
+        scaleTransitionUp.setByX(0.25f);
+        scaleTransitionUp.setByY(0.25f);
+        scaleTransitionUp.setCycleCount(1);
+        scaleTransitionUp.setAutoReverse(true);
+
+
+        ScaleTransition scaleTransitionDown = new ScaleTransition(Duration.millis(200),this);
+        scaleTransitionDown.setByX(-0.25f);
+        scaleTransitionDown.setByY(-0.25f);
+        scaleTransitionDown.setCycleCount(1);
+        scaleTransitionDown.setAutoReverse(true);
+
+
+
+        scaleTransitionUp.setOnFinished(event -> scaleTransitionDown.play());
+        setScaleX(1);
+        setScaleY(1);
+        scaleTransitionUp.play();
 
     }
 }

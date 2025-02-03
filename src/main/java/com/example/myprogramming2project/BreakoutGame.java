@@ -2,10 +2,17 @@ package com.example.myprogramming2project;
 // strategy, facade, decorator, singleton,adapter, factory
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+
+import javax.swing.*;
 
 
 public class BreakoutGame extends Application {
@@ -24,33 +31,65 @@ public class BreakoutGame extends Application {
 
     static int round = 1;
 
+    static int borderWidth = 30;
+    static Image leftLogo = new Image("file:src/Breakoutgamelogo.png");
+    static ImagePattern image_pattern = new ImagePattern(leftLogo);
+
+    static Image rightLogo = new Image("file:src/BreakoutVertical.png");
+    static ImagePattern image_pattern3 = new ImagePattern(rightLogo);
 
     @Override
     public void start(Stage stage){
 
-        // Strategy
+
 
 
 
 
         // Root node and scene
         root = new Group();
-        scene = new Scene(root, 800, 600, Color.BLACK);
+        scene = new Scene(root, 1280, 600, Color.BLACK);
+
         stage.setScene(scene);
 
 
         //Background
-        /*
-        ImagePattern image_pattern = new ImagePattern(new Image("file:src/Background.png"));
-        Rectangle backgroundRect = new Rectangle(0, 0, 800, 600);
-        backgroundRect.setFill(image_pattern);
+        ImagePattern imagePatternBackground = new ImagePattern(new Image("file:src/Background.png"));
+        Rectangle backgroundRect = new Rectangle(0, 0, 1280, 600);
+        backgroundRect.setFill(imagePatternBackground);
         root.getChildren().add(backgroundRect);
 
-         */
+
+        // Borders/rectangles placed at Globals.getOffsetX
+        Rectangle leftBorder = new Rectangle(Globals.getOffsetX()-borderWidth, 0, borderWidth, 600);
+        leftBorder.setFill(Color.GRAY);
+
+        Rectangle rightBorder = new Rectangle(scene.getWidth()-Globals.getOffsetX()+borderWidth, 0, borderWidth, 600);
+        rightBorder.setFill(Color.GRAY);
+
+        root.getChildren().add(leftBorder);
+        root.getChildren().add(rightBorder);
+
+
+        // Logo on the left -2 bordewidth  globals.getoffsetx -150
+        Rectangle logoRect = new Rectangle(15, 200, Globals.getOffsetX()-borderWidth*2, Globals.getOffsetX()-borderWidth*2);
+        logoRect.setFill(image_pattern);
+        root.getChildren().add(logoRect);
+
+        Rectangle rightRect = new Rectangle(scene.getWidth()-Globals.getOffsetX()+ borderWidth*2, 200, Globals.getOffsetX()-borderWidth*2, Globals.getOffsetX()-borderWidth*2);
+        rightRect.setFill(image_pattern);
+        root.getChildren().add(rightRect);
+
+
+
+
+
 
 
 
         // Paddle
+
+
         Paddle paddle = Paddle.createPaddle(scene);
         root.getChildren().add(paddle);
 
@@ -147,9 +186,9 @@ public class BreakoutGame extends Application {
         for (int i=0; i<11; i++) {
 
 
-            bricks.getChildren().add(softBrickFactory.createBrick(i*70, 200));
-            bricks.getChildren().add(mediumBrickFactory.createBrick(i*70, 150));
-            bricks.getChildren().add(hardBrickFactory.createBrick(i*70, 100));
+            bricks.getChildren().add(softBrickFactory.createBrick(Globals.getOffsetX() + i*72, 200));
+            bricks.getChildren().add(mediumBrickFactory.createBrick(Globals.getOffsetX() + i*72, 150));
+            bricks.getChildren().add(hardBrickFactory.createBrick(Globals.getOffsetX() + i*72, 100));
 
 
 
@@ -162,10 +201,10 @@ public class BreakoutGame extends Application {
 
 
 
-            bricks.getChildren().add(softBrickFactory.createBrick(i*70, 200));
-            bricks.getChildren().add(mediumBrickFactory.createBrick(i*70, 150));
-            bricks.getChildren().add(hardBrickFactory.createBrick(i*70, 100));
-            bricks.getChildren().add(superHardBrickFactory.createBrick(i*70, 50));
+            bricks.getChildren().add(softBrickFactory.createBrick(Globals.getOffsetX() + i*72, 200));
+            bricks.getChildren().add(mediumBrickFactory.createBrick(Globals.getOffsetX() + i*72, 150));
+            bricks.getChildren().add(hardBrickFactory.createBrick(Globals.getOffsetX() + i*72, 100));
+            bricks.getChildren().add(superHardBrickFactory.createBrick(Globals.getOffsetX() + i*72, 50));
 
 
         }

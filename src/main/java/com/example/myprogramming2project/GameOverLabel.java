@@ -23,11 +23,11 @@ public class GameOverLabel extends Label {
         super("Game Over");
         setTextFill(Color.RED);
         setFont(Font.font("Impact", 175));
-        setLayoutX(10);
+        setLayoutX(Globals.getOffsetX());
         setLayoutY(200);
         startLabel = new Label("Tap to start");
         startLabel.setTextFill(Color.WHITE);
-        startLabel.setLayoutX(325);
+        startLabel.setLayoutX(Globals.getOffsetX() + 325);
         startLabel.setLayoutY(450);
         startLabel.setFont(Font.font("impact",25 ));
     }

@@ -29,9 +29,9 @@ public class Ball extends Circle {
     }
 
     public void checkBounds(Scene scene){
-        if (getCenterX() + getRadius() >= scene.getWidth()){
+        if (getCenterX() + getRadius() >= scene.getWidth()-Globals.getOffsetX()){
             velocityX = -abs(velocityX);
-        } else if (getCenterX() - getRadius() <= 0){
+        } else if (getCenterX() - getRadius() <= Globals.getOffsetX()){
             velocityX = abs(velocityX);
         }
 
@@ -105,7 +105,6 @@ public class Ball extends Circle {
 
     public void setStrategy(BallStrategy strategy){
         this.strategy = strategy;
-        System.out.println(strategy.getSquareSpeed());
     }
    // public abstract int getSquareSpeed();
 }

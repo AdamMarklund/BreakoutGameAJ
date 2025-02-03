@@ -24,6 +24,5 @@ public class SoftBrick extends Brick{
     public void hitBrick(Group bricks, ScoreBoard scoreLabel) {
         bricks.getChildren().remove(this);
         scoreLabel.addPoints(1);
-        System.out.println("jabab");
     }
 }
