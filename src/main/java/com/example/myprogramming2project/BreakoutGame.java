@@ -22,8 +22,16 @@ public class BreakoutGame extends Application {
     static HardBrickFactory hardBrickFactory;
     static SuperHardBrickFactory superHardBrickFactory;
 
+    static int round = 1;
+
+
     @Override
     public void start(Stage stage){
+
+        // Strategy
+
+
+
 
         // Root node and scene
         root = new Group();
@@ -84,13 +92,10 @@ public class BreakoutGame extends Application {
 
         // Image image = new Image();
 
-        for (int i=0; i<11; i++){
-           bricks.getChildren().add(new SoftBrick(i*70,200));
-           bricks.getChildren().add(new MediumBrick(i*70, 150));
-           bricks.getChildren().add(new HardBrick(i*70, 100));
+        newGame(bricks);
 
 
-        }
+
         root.getChildren().add(bricks);
 
 
@@ -104,20 +109,30 @@ public class BreakoutGame extends Application {
             public void handle(long l) {
 
 
+
+                checkStrategy();
+                checkGameOver(bricks);
+
                 if (bricks.getChildren().isEmpty()) {
-                    newGame(bricks);
+
+                    newRound(bricks);
+
+                    round += 1;
+
+
                 }
 
 
 
-                checkGameOver(bricks);
                 ball.checkBounds(scene);
                 ball.checkPaddle(paddle, scene);
                 ball.move(paddle);
                 for (int i = 0; i<bricks.getChildren().size(); i++)
                     ((Brick)bricks.getChildren().get(i)).checkIntersects(ball, bricks, scoreLabel);
+
             }
         };
+
         gameLoop.start();
     }
 
@@ -131,21 +146,33 @@ public class BreakoutGame extends Application {
 
         for (int i=0; i<11; i++) {
 
-            //bricks.getChildren().add(new SoftBrick(i * 70, 200));
-            //bricks.getChildren().add(new MediumBrick(i * 70, 150));
-            //bricks.getChildren().add(new HardBrick(i * 70, 100));
-            //bricks.getChildren().add(new SuperHardBrick(i * 70, 50));
+
+            bricks.getChildren().add(softBrickFactory.createBrick(i*70, 200));
+            bricks.getChildren().add(mediumBrickFactory.createBrick(i*70, 150));
+            bricks.getChildren().add(hardBrickFactory.createBrick(i*70, 100));
+
+
+
+        }
+    }
+
+    private static void newRound(Group bricks){
+
+        for (int i=0; i<11; i++) {
+
+
 
             bricks.getChildren().add(softBrickFactory.createBrick(i*70, 200));
             bricks.getChildren().add(mediumBrickFactory.createBrick(i*70, 150));
             bricks.getChildren().add(hardBrickFactory.createBrick(i*70, 100));
             bricks.getChildren().add(superHardBrickFactory.createBrick(i*70, 50));
+
+
         }
     }
-
     private static void checkGameOver(Group bricks){
 
-
+        // When the ball leaves the screen
         if (ball.getCenterY()+ball.getRadius() >= scene.getHeight()){
 
             if (ball.isGameStarted()) {
@@ -161,6 +188,7 @@ public class BreakoutGame extends Application {
                  */
                 gameOverLabel.setVisible(true);
                 gameOverLabel.getStartLabel().setVisible(true);
+                round = 1;
 
 
             }
@@ -189,5 +217,17 @@ public class BreakoutGame extends Application {
             });
 
         }
+    }
+
+    public static void checkStrategy(){
+
+        if (round == 1)
+            ball.setStrategy(new NormalBallStrategy((int)ball.getCenterX(), (int)ball.getCenterY(), scene));
+        else if (round == 2)
+            ball.setStrategy(new FastBallStrategy((int)ball.getCenterX(), (int)ball.getCenterY(), scene));
+        else
+            ball.setStrategy(new CrazyBallStrategy((int)ball.getCenterX(), (int)ball.getCenterY(), scene));
+
+
     }
 }

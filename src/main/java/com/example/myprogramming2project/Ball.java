@@ -11,6 +11,7 @@ public class Ball extends Circle {
     private int velocityX = 0;
     private int velocityY = 0;
     private boolean gameStarted = false;
+    private BallStrategy strategy;
 
 
 
@@ -19,9 +20,7 @@ public class Ball extends Circle {
         setFill(Color.WHITE);
 
         scene.setOnMouseClicked(e -> {
-            velocityX = 10;
-            velocityY = -10;
-            gameStarted = true;
+            getBallMoving();
             scene.setOnMouseClicked(null);
         });
 
@@ -43,21 +42,21 @@ public class Ball extends Circle {
 
 
     public int newVelocityY(int newVelocityX){
-        return velocityY = (int)Math.sqrt(200-Math.pow((double)velocityX,2));
+        return velocityY = (int)Math.sqrt(strategy.getSquareSpeed()-Math.pow((double)velocityX,2));
     }
     public void checkPaddle(Paddle paddle, Scene scene){
         if (getCenterY()+getRadius() >= paddle.getY() && getCenterY()+getRadius() < scene.getHeight()){
             if (getCenterX()+getRadius() >= paddle.getX() && getCenterX()-getRadius() <= paddle.getX()+paddle.getWidth()) {
                 // "3 zoner"
                 if (getCenterX() + getRadius() < paddle.getX() + paddle.getWidth() / 3) {
-                    velocityX = -12;
+                    velocityX = (int)(-1.2 * Math.sqrt(strategy.getSquareSpeed()/2));
                     velocityY = -newVelocityY(velocityX);
 
                 } else if (getCenterX() - getRadius() > paddle.getX() + paddle.getWidth() * 2 / 3) {
-                    velocityX = 12;
+                    velocityX = (int)(1.2 * Math.sqrt(strategy.getSquareSpeed()/2));
                     velocityY = -newVelocityY(velocityX);
 
-                } else {velocityY = -velocityY;}
+                } else {velocityY = -velocityY; velocityX = (int)(1.2 * Math.sqrt(strategy.getSquareSpeed()/2));}
             }
         }
     }
@@ -99,11 +98,15 @@ public class Ball extends Circle {
     }
 
     public void getBallMoving() {
-        velocityX = 10;
-        velocityY = -10;
+        velocityX = (int)Math.sqrt(strategy.getSquareSpeed()/2);
+        velocityY = -(int)Math.sqrt(strategy.getSquareSpeed()/2);
         gameStarted = true;
     }
 
-
+    public void setStrategy(BallStrategy strategy){
+        this.strategy = strategy;
+        System.out.println(strategy.getSquareSpeed());
+    }
+   // public abstract int getSquareSpeed();
 }
 
