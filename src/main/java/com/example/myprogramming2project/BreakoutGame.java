@@ -23,7 +23,7 @@ public class BreakoutGame extends Application {
     static Group root;
     static GameOverLabel gameOverLabel;
     static ScoreBoard scoreLabel;
-    
+
     static Group bricks;
 
     // Factory pattern
@@ -142,25 +142,24 @@ public class BreakoutGame extends Application {
     public static void main(String[] args) {
         // Runs start()
         launch();
-
     }
 
     private static void newGame(){
         bricks.getChildren().clear();
 
         for (int i=0; i<11; i++) {
-            bricks.getChildren().add(softBrickFactory.createBrick(Globals.getOffsetX() + i*72, 200));
-            bricks.getChildren().add(mediumBrickFactory.createBrick(Globals.getOffsetX() + i*72, 150));
-            bricks.getChildren().add(hardBrickFactory.createBrick(Globals.getOffsetX() + i*72, 100));
+            bricks.getChildren().add(softBrickFactory.createBrick(Globals.getOffsetX() + 35 + i*65, 200));
+            bricks.getChildren().add(mediumBrickFactory.createBrick(Globals.getOffsetX() + 35 + i*65, 150));
+            bricks.getChildren().add(hardBrickFactory.createBrick(Globals.getOffsetX() + 35 + i*65, 100));
         }
     }
 
     private static void newRound(){
         for (int i=0; i<11; i++) {
-            bricks.getChildren().add(softBrickFactory.createBrick(Globals.getOffsetX() + i*72, 200));
-            bricks.getChildren().add(mediumBrickFactory.createBrick(Globals.getOffsetX() + i*72, 150));
-            bricks.getChildren().add(hardBrickFactory.createBrick(Globals.getOffsetX() + i*72, 100));
-            bricks.getChildren().add(superHardBrickFactory.createBrick(Globals.getOffsetX() + i*72, 50));
+            bricks.getChildren().add(softBrickFactory.createBrick(Globals.getOffsetX() + 35 + i*65, 200));
+            bricks.getChildren().add(mediumBrickFactory.createBrick(Globals.getOffsetX() + 35 + i*65, 150));
+            bricks.getChildren().add(hardBrickFactory.createBrick(Globals.getOffsetX() + 35 + i*65, 100));
+            bricks.getChildren().add(superHardBrickFactory.createBrick(Globals.getOffsetX() + 35 + i*65, 50));
         }
     }
 
@@ -197,10 +196,10 @@ public class BreakoutGame extends Application {
 
     public static void checkStrategy(){
         if (round == 1)
-            ball.setStrategy(new NormalBallStrategy((int)ball.getCenterX(), (int)ball.getCenterY(), scene));
+            ball.setStrategy(new NormalBallStrategy());
         else if (round == 2)
-            ball.setStrategy(new FastBallStrategy((int)ball.getCenterX(), (int)ball.getCenterY(), scene));
+            ball.setStrategy(new FastBallStrategy());
         else
-            ball.setStrategy(new CrazyBallStrategy((int)ball.getCenterX(), (int)ball.getCenterY(), scene));
+            ball.setStrategy(new CrazyBallStrategy());
     }
 }

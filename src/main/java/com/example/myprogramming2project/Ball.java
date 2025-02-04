@@ -51,7 +51,14 @@ public class Ball extends Circle {
                     velocityX = (int)(1.2 * Math.sqrt(strategy.getSquareSpeed()/2));
                     velocityY = -newVelocityY(velocityX);
 
-                } else {velocityY = -velocityY; velocityX = (int)(1.2 * Math.sqrt(strategy.getSquareSpeed()/2));}
+                } else {
+                    velocityY = -velocityY;
+                    if (velocityX < 0)
+                        velocityX = -(int)(1.2 * Math.sqrt(strategy.getSquareSpeed()/2));
+                    else if (velocityX > 0)
+                        velocityX = (int)(1.2 * Math.sqrt(strategy.getSquareSpeed()/2));
+
+                }
             }
         }
     }

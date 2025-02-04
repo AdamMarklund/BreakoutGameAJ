@@ -2,11 +2,7 @@ package com.example.myprogramming2project;
 
 import javafx.scene.Scene;
 
-public class NormalBallStrategy extends Ball implements BallStrategy{
-
-    public NormalBallStrategy(int x, int y, Scene scene){
-        super(x, y, scene);
-    }
+public class NormalBallStrategy implements BallStrategy{
 
     @Override
     public int getSquareSpeed() {
