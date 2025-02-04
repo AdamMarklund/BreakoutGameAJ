@@ -12,13 +12,10 @@ public abstract class Brick extends Group {
     private static int WIDTH = 50;
     private static int HEIGHT = 20;
 
-
     private Polygon leftTriangle, rightTriangle, topTriangle, bottomTriangle;
 
     public Brick(double leftX, double topY){
         brickFromTriangles(leftX, topY);
-
-
     }
 
     private void brickFromTriangles(double leftX, double topY){
@@ -27,14 +24,12 @@ public abstract class Brick extends Group {
         double  rightX = leftX + WIDTH;
         double bottomY = topY + HEIGHT;
 
-
         leftTriangle = new Polygon();
         leftTriangle.getPoints().addAll(new Double[]{
                 leftX,topY,
                 leftX,bottomY,
                 centerX, centerY});
         leftTriangle.setFill(Color.GREEN);
-
         getChildren().add(leftTriangle);
 
         rightTriangle = new Polygon();
@@ -43,7 +38,6 @@ public abstract class Brick extends Group {
                 rightX,bottomY,
                 centerX, centerY});
         rightTriangle.setFill(Color.RED);
-
         getChildren().add(rightTriangle);
 
         topTriangle = new Polygon();
@@ -52,7 +46,6 @@ public abstract class Brick extends Group {
                 leftX,topY,
                 centerX, centerY});
         topTriangle.setFill(Color.BLUE);
-
         getChildren().add(topTriangle);
 
         bottomTriangle = new Polygon();
@@ -61,9 +54,7 @@ public abstract class Brick extends Group {
                 leftX,bottomY,
                 centerX, centerY});
         bottomTriangle.setFill(Color.YELLOW);
-
         getChildren().add(bottomTriangle);
-
     }
 
     public void checkIntersects(Ball ball, Group bricks, ScoreBoard scoreLabel) {
@@ -84,7 +75,6 @@ public abstract class Brick extends Group {
             ball.bounceRight();
             hit = true;
         }
-
 
         if (hit) {
             hitBrick(bricks, scoreLabel);

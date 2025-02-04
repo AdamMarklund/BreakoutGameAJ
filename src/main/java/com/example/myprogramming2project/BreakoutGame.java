@@ -1,5 +1,5 @@
 package com.example.myprogramming2project;
-// strategy, facade, decorator, singleton,adapter, factory
+
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 
@@ -12,53 +12,46 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
-import javax.swing.*;
+
 
 
 public class BreakoutGame extends Application {
 
+    // Nodes
     static Ball ball;
     static Scene scene;
     static Group root;
-    static Group gameOverLabelGr;
     static GameOverLabel gameOverLabel;
     static ScoreBoard scoreLabel;
+    
+    static Group bricks;
 
-    static SoftBrickFactory softBrickFactory;
-    static MediumBrickFactory mediumBrickFactory;
-    static HardBrickFactory hardBrickFactory;
-    static SuperHardBrickFactory superHardBrickFactory;
+    // Factory pattern
+    static SoftBrickFactory softBrickFactory = new SoftBrickFactory();
+    static MediumBrickFactory mediumBrickFactory = new MediumBrickFactory();
+    static HardBrickFactory hardBrickFactory = new HardBrickFactory();
+    static SuperHardBrickFactory superHardBrickFactory = new SuperHardBrickFactory();
 
+    // current round, changes when no bricks are left
     static int round = 1;
 
+    // Width of the pillars on both side of the game.
     static int borderWidth = 30;
-    static Image leftLogo = new Image("file:src/Breakoutgamelogo.png");
-    static ImagePattern image_pattern = new ImagePattern(leftLogo);
 
-    static Image rightLogo = new Image("file:src/BreakoutVertical.png");
-    static ImagePattern image_pattern3 = new ImagePattern(rightLogo);
-
+    // Runs once when the program starts
     @Override
     public void start(Stage stage){
-
-
-
-
-
 
         // Root node and scene
         root = new Group();
         scene = new Scene(root, 1280, 600, Color.BLACK);
-
         stage.setScene(scene);
-
 
         //Background
         ImagePattern imagePatternBackground = new ImagePattern(new Image("file:src/Background.png"));
         Rectangle backgroundRect = new Rectangle(0, 0, 1280, 600);
         backgroundRect.setFill(imagePatternBackground);
         root.getChildren().add(backgroundRect);
-
 
         // Borders/rectangles placed at Globals.getOffsetX
         Rectangle leftBorder = new Rectangle(Globals.getOffsetX()-borderWidth, 0, borderWidth, 600);
@@ -71,7 +64,9 @@ public class BreakoutGame extends Application {
         root.getChildren().add(rightBorder);
 
 
-        // Logo on the left -2 bordewidth  globals.getoffsetx -150
+
+        // BreakoutgameAJ logos
+        ImagePattern image_pattern = new ImagePattern(new Image("file:src/Breakoutgamelogo.png"));
         Rectangle logoRect = new Rectangle(15, 200, Globals.getOffsetX()-borderWidth*2, Globals.getOffsetX()-borderWidth*2);
         logoRect.setFill(image_pattern);
         root.getChildren().add(logoRect);
@@ -80,16 +75,7 @@ public class BreakoutGame extends Application {
         rightRect.setFill(image_pattern);
         root.getChildren().add(rightRect);
 
-
-
-
-
-
-
-
         // Paddle
-
-
         Paddle paddle = Paddle.createPaddle(scene);
         root.getChildren().add(paddle);
 
@@ -101,172 +87,120 @@ public class BreakoutGame extends Application {
         gameOverLabel.getStartLabel().setVisible(false);
         gameOverLabel.animateStartLabel();
 
-
         // Ball
         ball = new Ball((int)paddle.getX()+(int)paddle.getWidth()/2, (int)paddle.getY(), scene);
         root.getChildren().add(ball);
+        bricks = new Group();
 
-        Group bricks = new Group();
-
-
+        // ScoreLabel
         scoreLabel = new ScoreBoard();
         root.getChildren().add(scoreLabel);
 
+        // Draws the initial bricks
+        newGame();
 
-        /*
-        Image image = new Image("file:src/Gold.png");
-        ImagePattern image_pattern = new ImagePattern(image);
-        // create a Rectangle
-        Rectangle rect = new Rectangle(100, 100, 200, 150);
-        root.getChildren().add(rect);
-        // set fill for rectangle
-
-         */
-
-        softBrickFactory = new SoftBrickFactory();
-        mediumBrickFactory = new MediumBrickFactory();
-        hardBrickFactory = new HardBrickFactory();
-        superHardBrickFactory = new SuperHardBrickFactory();
-
-
-        // Image image = new Image();
-
-        newGame(bricks);
-
-
-
+        // Adds the brick node
         root.getChildren().add(bricks);
 
-
-
-
-
+        // Displays the window to the user
         stage.show();
 
+
         AnimationTimer gameLoop = new AnimationTimer() {
+            // Executes every frame
             @Override
             public void handle(long l) {
 
-
-
+                //Checks what strategy the ball should use
                 checkStrategy();
-                checkGameOver(bricks);
 
+                checkGameOver();
+
+                // Checks if the round is over
                 if (bricks.getChildren().isEmpty()) {
-
-                    newRound(bricks);
-
+                    newRound();
                     round += 1;
-
-
                 }
 
-
-
+                // Checks if the ball is at the border of the game winddow, and if so changes its direction
                 ball.checkBounds(scene);
+                // Same as above but for the paddle
                 ball.checkPaddle(paddle, scene);
+                // Sets the ball position continously
                 ball.move(paddle);
+
+                // Loops through bricks and checks if any of them are colliding with the ball
                 for (int i = 0; i<bricks.getChildren().size(); i++)
                     ((Brick)bricks.getChildren().get(i)).checkIntersects(ball, bricks, scoreLabel);
 
             }
         };
-
+        // Starts the AnimationTimer loop
         gameLoop.start();
     }
 
     public static void main(String[] args) {
+        // Runs start()
         launch();
 
     }
 
-    private static void newGame(Group bricks){
+    private static void newGame(){
         bricks.getChildren().clear();
 
         for (int i=0; i<11; i++) {
-
-
             bricks.getChildren().add(softBrickFactory.createBrick(Globals.getOffsetX() + i*72, 200));
             bricks.getChildren().add(mediumBrickFactory.createBrick(Globals.getOffsetX() + i*72, 150));
             bricks.getChildren().add(hardBrickFactory.createBrick(Globals.getOffsetX() + i*72, 100));
-
-
-
         }
     }
 
-    private static void newRound(Group bricks){
-
+    private static void newRound(){
         for (int i=0; i<11; i++) {
-
-
-
             bricks.getChildren().add(softBrickFactory.createBrick(Globals.getOffsetX() + i*72, 200));
             bricks.getChildren().add(mediumBrickFactory.createBrick(Globals.getOffsetX() + i*72, 150));
             bricks.getChildren().add(hardBrickFactory.createBrick(Globals.getOffsetX() + i*72, 100));
             bricks.getChildren().add(superHardBrickFactory.createBrick(Globals.getOffsetX() + i*72, 50));
-
-
         }
     }
-    private static void checkGameOver(Group bricks){
 
+    private static void checkGameOver(){
         // When the ball leaves the screen
         if (ball.getCenterY()+ball.getRadius() >= scene.getHeight()){
 
+            // When the game has started again
             if (ball.isGameStarted()) {
-                //gameOverLabel.setVisible(true);
-                //bricks.getChildren().clear();
-                /*
-                if (gameOverLabelGr.getChildren().isEmpty()) {
-                    gameOverLabelGr.getChildren().add(gameOverLabel);
-                    root.getChildren().add(gameOverLabelGr);
-
-
-
-                 */
                 gameOverLabel.setVisible(true);
                 gameOverLabel.getStartLabel().setVisible(true);
                 round = 1;
-
-
             }
-
-
-                scene.setOnMouseClicked(e -> {
-                    ball.resetBall();
-                    gameOverLabel.setVisible(false);
-
-
-                    newGame(bricks);
-                    //gameOverLabelGr.getChildren().removeFirst();
-                    scene.setOnMouseClicked(null);
-
+            // Sets up a listener that runs when clicked.
+            scene.setOnMouseClicked(e -> {
+                ball.resetBall();
+                gameOverLabel.setVisible(false);
+                newGame();
+                scene.setOnMouseClicked(null);
                 });
             }
 
 
         if (!ball.isGameStarted()) {
-            //gameOverLabel.setVisible(true);
+            // Runs the second time you press the mouse after game over
             scene.setOnMouseClicked(e -> {
                 scoreLabel.resetScore();
                 ball.getBallMoving();
                 gameOverLabel.getStartLabel().setVisible(false);
                 scene.setOnMouseClicked(null);
             });
-
         }
     }
 
     public static void checkStrategy(){
-
         if (round == 1)
             ball.setStrategy(new NormalBallStrategy((int)ball.getCenterX(), (int)ball.getCenterY(), scene));
         else if (round == 2)
             ball.setStrategy(new FastBallStrategy((int)ball.getCenterX(), (int)ball.getCenterY(), scene));
         else
             ball.setStrategy(new CrazyBallStrategy((int)ball.getCenterX(), (int)ball.getCenterY(), scene));
-
-
     }
 }

@@ -21,13 +21,12 @@ public class MediumBrick extends Brick {
         Rectangle rect = new Rectangle(leftX, topY, 50, 20);
         rect.setFill(image_pattern);
         getChildren().add(rect);
-
     }
+
     @Override
     public void hitBrick(Group bricks, ScoreBoard scoreLabel) {
         bricks.getChildren().set(bricks.getChildren().indexOf(this), new SoftBrick(leftX, topY));
         scoreLabel.addPoints(2);
-
     }
 }
 

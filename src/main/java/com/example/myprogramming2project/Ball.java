@@ -13,8 +13,6 @@ public class Ball extends Circle {
     private boolean gameStarted = false;
     private BallStrategy strategy;
 
-
-
     public Ball(int x, int y, Scene scene){
         super(x,y-BALLSIZE-1, BALLSIZE);
         setFill(Color.WHITE);
@@ -23,9 +21,6 @@ public class Ball extends Circle {
             getBallMoving();
             scene.setOnMouseClicked(null);
         });
-
-
-
     }
 
     public void checkBounds(Scene scene){
@@ -40,14 +35,14 @@ public class Ball extends Circle {
         }
     }
 
-
     public int newVelocityY(int newVelocityX){
         return velocityY = (int)Math.sqrt(strategy.getSquareSpeed()-Math.pow((double)velocityX,2));
     }
+
     public void checkPaddle(Paddle paddle, Scene scene){
         if (getCenterY()+getRadius() >= paddle.getY() && getCenterY()+getRadius() < scene.getHeight()){
             if (getCenterX()+getRadius() >= paddle.getX() && getCenterX()-getRadius() <= paddle.getX()+paddle.getWidth()) {
-                // "3 zoner"
+                // "three zones"
                 if (getCenterX() + getRadius() < paddle.getX() + paddle.getWidth() / 3) {
                     velocityX = (int)(-1.2 * Math.sqrt(strategy.getSquareSpeed()/2));
                     velocityY = -newVelocityY(velocityX);
@@ -106,6 +101,5 @@ public class Ball extends Circle {
     public void setStrategy(BallStrategy strategy){
         this.strategy = strategy;
     }
-   // public abstract int getSquareSpeed();
 }
 

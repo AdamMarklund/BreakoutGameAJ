@@ -18,8 +18,8 @@ public class SoftBrick extends Brick{
         // set fill for rectangle
         rect.setFill(image_pattern);
         getChildren().add(rect);
-
     }
+
     @Override
     public void hitBrick(Group bricks, ScoreBoard scoreLabel) {
         bricks.getChildren().remove(this);

@@ -29,27 +29,20 @@ public class Paddle extends Rectangle {
     }
     private Paddle(Scene scene) {
 
-        super(scene.getWidth()/2-WIDTH/2, scene.getHeight()-HEIGHT-GAP, WIDTH, HEIGHT);
+        super(scene.getWidth() / 2 - WIDTH / 2, scene.getHeight() - HEIGHT - GAP, WIDTH, HEIGHT);
         setFill(Color.GREEN);
         setArcHeight(20);
         setArcWidth(20);
         scene.setCursor(Cursor.NONE);
         scene.setOnMouseMoved(e -> {
-            if (e.getX() >= scene.getWidth()-Globals.getOffsetX()+30-getWidth()){
-                setX(scene.getWidth()-Globals.getOffsetX()+30-getWidth());
-            } else if (e.getX() <= Globals.getOffsetX()){
+            if (e.getX() >= scene.getWidth() - Globals.getOffsetX() + 30 - getWidth()) {
+                setX(scene.getWidth() - Globals.getOffsetX() + 30 - getWidth());
+            } else if (e.getX() <= Globals.getOffsetX()) {
                 setX(Globals.getOffsetX());
+            } else {
+                setX(e.getX());
             }
-            else {setX(e.getX());}
         });
         setFill(image_pattern);
-
     }
-
-
-    public void movePaddle(){
-
-
-    }
-
 }

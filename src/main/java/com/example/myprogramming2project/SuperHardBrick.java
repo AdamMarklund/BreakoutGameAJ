@@ -21,7 +21,6 @@ public class SuperHardBrick extends Brick{
         Rectangle rect = new Rectangle(leftX, topY, 50, 20);
         rect.setFill(image_pattern);
         getChildren().add(rect);
-
     }
 
     @Override

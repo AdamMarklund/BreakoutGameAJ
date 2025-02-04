@@ -28,8 +28,5 @@ public class HardBrick extends Brick{
     public void hitBrick(Group bricks, ScoreBoard scoreLabel){
         bricks.getChildren().set(bricks.getChildren().indexOf(this), new MediumBrick(leftX, topY));
         scoreLabel.addPoints(3);
-
     }
-
-
 }
